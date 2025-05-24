@@ -220,13 +220,20 @@ elif seleccion == 'ACCESO A BBDD':
 
 elif seleccion == 'REGISTRO DE ACCIONES':
     st.header('🗃️ Acciones que han realizado los usuarios')
+    clave_correcta = "gaydier1011"
 
-    conexion = sqlite3.connect('Registros.db')
-    df_historial = pd.read_sql_query("SELECT * FROM HISTORIAL ORDER BY fecha_hora DESC", conexion) # ordena todo en orden descente segun la fecha y hora
-    conexion.close()
+    constrasena_visualizar = st.text_input('Ingresa la contraseña para ver la base de datos', type='password')
+    
 
-    if not df_historial.empty:
-        st.dataframe(df_historial.style.apply(color_db, axis=0))
-    else:
-        st.info('No hay acciones registradas aun')
+    if constrasena_visualizar:
+        if constrasena_visualizar == clave_correcta:
+
+            conexion = sqlite3.connect('Registros.db')
+            df_historial = pd.read_sql_query("SELECT * FROM HISTORIAL ORDER BY fecha_hora DESC", conexion) # ordena todo en orden descente segun la fecha y hora
+            conexion.close()
+
+            if not df_historial.empty:
+                st.dataframe(df_historial.style.apply(color_db, axis=0))
+            else:
+                st.info('No hay acciones registradas aun')
 
